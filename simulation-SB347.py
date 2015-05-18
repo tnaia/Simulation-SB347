@@ -96,9 +96,9 @@ def sex_proportions(proportions_file_name, rate_file_name):
                 comma_indexes += [i]
             i += 1
         
-        Male_proportion = float(line[0:comma_indexes[0]]) * prodRate[line_counter]
-        Female_proportion = float(line[comma_indexes[0]+1:comma_indexes[1]])*prodRate[line_counter] #* prod_rate(rate_file)[line_counter]
-        Hermaphrodite_proportion = float(line[comma_indexes[1]+1:]) * prodRate[line_counter]
+        Male_proportion = int(float(line[0:comma_indexes[0]]) * prodRate[line_counter])
+        Female_proportion = int(float(line[comma_indexes[0]+1:comma_indexes[1]])*prodRate[line_counter]) #* prod_rate(rate_file)[line_counter]
+        Hermaphrodite_proportion = int(float(line[comma_indexes[1]+1:]) * prodRate[line_counter])
     
         gender_prodRate += [[Male_proportion,Female_proportion,Hermaphrodite_proportion]]
         
@@ -134,8 +134,8 @@ lifespanF = F_larval_time + F_adult_time # Total lifespan of a hermaphrodite (fr
 # Male settings
 # -------------
 
-M_larval_time = 2 * day_time_points + 1 # Time period where the male is a larvae (2days and 8h)
-M_adult_time = 5*day_time_points+1 # Time period where the male is reproducing (5 days and 8 hours (=1 time point))
+M_larval_time = 2 * day_time_points+1 # Time period where the male is a larvae (2days and 8h)
+M_adult_time = 5*day_time_points +1 # Time period where the male is reproducing (5 days and 8 hours (=1 time point))
 lifespanM = M_larval_time + M_adult_time # Total lifespan of a male (from egg to end of reproduction)
 
 
@@ -246,12 +246,21 @@ while current_iteration < N_iterations:
     Total_mal =sum(N_mal)
     
     result = [Total_mal,Total_fem,Total_her]
-    total = sum(result)    
+    total = sum(result)  
+    
+# Total number of individuals of each gender
+
+    L1_fem = sum(N_fem[1:2])
+    L1_her = sum(N_her[1:2])
+    L1_mal =sum(N_mal[1:2])
+    
+    result_L1 = [L1_mal,L1_fem,L1_her]
+    total_L1 = sum(result_L1)    
     
 # Choosing population for output (Adults or mixed individuals)
 
-    population_output = result_A
-    total_population_output = total_A
+    population_output = result
+    total_population_output = total
 
     if total_population_output != 0:
         proportion = [x * 100/total_population_output for x in population_output]
